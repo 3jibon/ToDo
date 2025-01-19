@@ -1,0 +1,152 @@
+/* General Body Styles */
+body {
+  background-color: #121212;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Calendar Styles */
+#calendar {
+  font-family: 'Roboto', sans-serif;
+  margin: 20px auto;
+  max-width: 100%;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+/* Calendar Header Styles */
+#calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+#calendar-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f4f4f4;
+}
+
+#calendar-header button {
+  background-color: #333;
+  color: #f39c12;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#calendar-header button:hover {
+  background-color: #f39c12;
+  color: #333;
+  transform: scale(1.05);
+}
+
+/* Calendar Table Styles */
+#calendar table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+#calendar th, #calendar td {
+  padding: 12px;
+  width: 14.28%;
+  border: 1px solid #444;
+  color: white;
+}
+
+#calendar th {
+  background-color: #333;
+  color: #f4f4f4;
+  font-weight: bold;
+}
+
+#calendar td.today {
+  background-color: #f39c12;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+#calendar td:hover {
+  background-color: #444;
+  color: #f39c12;
+  transition: 0.3s ease;
+}
+
+/* Responsive Design */
+
+/* Large Screens (Desktop) */
+@media (min-width: 1024px) {
+  #calendar {
+    max-width: 900px;
+  }
+}
+@media (min-width: 576px) {
+    .calendar-buttons {
+        display: flex;
+        justify-content: space-between; /* Place the buttons at the edges */
+        align-items: center; /* Center the content vertically */
+        width: 100%;
+    }
+
+    /* Ensure the buttons stay on the same line */
+    .calendar-buttons button {
+        margin: 0;
+    }
+}
+
+/* For small screens (<576px, mobile) */
+@media (max-width: 575px) {
+    .calendar-buttons {
+        display: flex;
+        justify-content: space-between; /* Place buttons next to each other */
+        flex-direction: row; /* Arrange buttons horizontally */
+        align-items: center;
+    }
+
+    /* For spacing on mobile */
+    .calendar-buttons button {
+        margin: 0;
+    }
+}
+/* Medium Screens (Tablets) */
+@media (max-width: 1024px) {
+  #calendar {
+    width: 90%;
+    margin: 20px auto;
+  }
+}
+
+/* Small Screens (Phones) */
+@media (max-width: 767px) {
+  #calendar-header h2 {
+    font-size: 1.25rem;
+  }
+
+  #calendar-header button {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  #calendar th, #calendar td {
+    padding: 10px;
+  }
+
+  #calendar table {
+    font-size: 0.9rem;
+  }
+}

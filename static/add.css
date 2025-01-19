@@ -1,0 +1,91 @@
+/* Task container and individual task styling */
+.task-container {
+    margin-top: 20px;
+}
+
+/* Task item styling */
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Task title and checkbox alignment */
+.task-details {
+    display: flex;
+    align-items: center;
+}
+
+/* Custom checkbox styling */
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: #3f883e; /* Change the checkbox color to blue */
+}
+
+/* Task title default styling */
+.task-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for task title */
+.task-title:hover {
+    color: #44984c;
+    text-decoration: underline;
+}
+
+/* Strike-through effect when task is marked as completed */
+ .task-title.completed {
+        text-decoration: line-through;
+        color: #6c757d;
+    }
+
+/* Date and icons styling */
+.due-date, .added-date {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+}
+
+.task-icons .btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+.task-icons .btn-warning:hover {
+    background-color: rgba(255, 193, 7, 0.1); /* Light yellow background for edit button */
+}
+
+.task-icons .btn-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1); /* Light red background for delete button */
+}
+
+/* Hover effect for edit and delete icons */
+.task-icons .btn:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Add light background on hover */
+    transform: scale(1.1); /* Slightly increase the size for interaction feedback */
+}
+
+/* Spacing between icons */
+.task-icons .fas {
+    margin-left: 10px;
+}
+.task-icons .btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}

@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Task{% endblock %}
+
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+{% block body %}
+<section class="vh-100">
+    <div class="container m-5 p-2 rounded mx-auto bg-light shadow">
+        <!-- App title section -->
+        <div class="row m-1 p-4">
+            <div class="col">
+                <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
+                    <i class=" bg-primary text-white rounded p-2"></i>
+                    <u>My Todo-s</u>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create todo section -->
+        <div class="row m-1 p-3">
+            <div class="col col-11 mx-auto">
+                <form action="/add_task/" method="POST" id="addTaskForm">
+                    {% csrf_token %}
+                    <div class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center">
+                        
+                        <!-- Task Title Input -->
+                        <div class="col">
+                            <input class="form-control form-control-lg border-0 add-todo-input bg-transparent rounded" 
+                                type="text" 
+                                placeholder="Add task title..." 
+                                id="newTaskTitle" 
+                                name="title" 
+                                required>
+                        </div>
+                        
+                        <!-- Description Input -->
+                        <div class="col-12 mt-2">
+                            <textarea class="form-control border-0 bg-transparent rounded" 
+                                    placeholder="Add task description..." 
+                                    id="taskDescription" 
+                                    name="description" 
+                                    rows="2" 
+                                    required></textarea>
+                        </div>
+
+                        <!-- Date Picker -->
+                        <div class="col-auto m-0 px-2 d-flex align-items-center mt-2">
+                            <label class="text-secondary my-2 p-0 px-1 view-opt-label due-date-label d-none">Due date not set</label>
+                            <div class="input-group">
+                                <button type="button" class="btn" id="calendarIcon" data-bs-toggle="modal" data-bs-target="#calendarModal">
+                                    <i class="fas fa-calendar-alt fa-lg text-primary"></i>
+                                </button>
+
+                                <!-- Modal for Date Picker -->
+                                <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="calendarModalLabel">Select Due Date</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <input type="date" class="form-control" id="taskDueDate" name="due_date" required>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" id="selectDateButton" data-bs-dismiss="modal">Select Date</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-auto px-0 mx-0 mr-2 mt-3">
+                            <button type="submit" class="btn btn-primary" id="addTaskButton">Add Task</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="p-2 mx-4 border-black-25 border-bottom"></div>
+        
+        <div class="task-container">
+            {% block content %}
+            <div class="task-list">
+                {% for task in tasks %}
+                    <div class="task d-flex flex-column flex-sm-row justify-content-between align-items-start mb-2">
+                        <div class="task-details d-flex align-items-center mb-2 mb-sm-0">
+                            <!-- Form with checkbox to mark task as completed -->
+                            <form action="{% url 'update_task_status' task.id %}" method="post" id="task-form-{{ task.id }}">
+                                {% csrf_token %}
+                                <input type="checkbox" 
+                                    name="is_complete" 
+                                    class="task-checkbox" 
+                                    id="task{{ task.id }}" 
+                                    {% if task.is_complete %} checked {% endif %} 
+                                    onclick="submitForm({{ task.id }})">
+                            </form>
+                            <p class="task-title ms-2 {% if task.is_complete %}completed{% endif %}" 
+                                id="task{{ task.id }}Title" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#taskModal" 
+                                onclick="openModal('{{ task.title }}', '{{ task.description|escapejs }}')">
+                                {{ task.title }}
+                            </p>
+                        </div>
+
+                        <!-- Task Due Date and Created Time -->
+                        <div class="task-info ms-auto text-sm-end">
+                            <strong><p class="due-date">Due: {{ task.due_date }}</p></strong>
+                            <p class="created" >Added: {{task.created}}</p>
+                        </div>
+
+                        <div class="task-icons d-flex gap-3 mt-2 mt-sm-0">
+                            <!-- Edit Button -->
+                            <button type="button" class="btn btn-warning text-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editTaskModal" onclick="openEditModal('{{ task.id }}', '{{ task.title }}', '{{ task.description|escapejs }}', '{{ task.due_date }}')">
+                            <i class="fas fa-edit"></i>
+                            </button>
+
+                            <!-- Delete Button -->
+                            <form method="POST" action="{% url 'delete_task' task.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger text-primary"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endblock %}
+        </div>
+
+        <!-- Modal for Task Details -->
+        <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="taskModalLabel">Task Title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modalDescription">Task Description</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Edit Task -->
+        <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTaskModalLabel">Edit Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="POST" id="editTaskForm">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <input type="hidden" id="editTaskId" name="task_id">
+                            <div class="mb-3">
+                                <label for="editTaskTitle" class="form-label">Task Title</label>
+                                <input type="text" class="form-control" id="editTaskTitle" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTaskDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="editTaskDescription" name="description" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTaskDueDate" class="form-label">Due Date</label>
+                                <input type="date" class="form-control" id="editTaskDueDate" name="due_date" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    function openModal(title, description) {
+        document.getElementById('taskModalLabel').innerText = title;
+        document.getElementById('modalDescription').innerText = description;
+    }
+
+    function openEditModal(taskId, taskTitle, taskDescription, taskDueDate) {
+        document.getElementById('editTaskForm').action = "/edit_task/" + taskId + "/";
+        document.getElementById('editTaskId').value = taskId;
+        document.getElementById('editTaskTitle').value = taskTitle;
+        document.getElementById('editTaskDescription').value = taskDescription;
+        document.getElementById('editTaskDueDate').value = taskDueDate;
+    }
+
+    function submitForm(taskId) {
+        document.getElementById('task-form-' + taskId).submit();
+    }
+</script>
+
+{% endblock %}
