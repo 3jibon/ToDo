@@ -1,5 +1,5 @@
 # Step 1: Start with a base image that has Python installed
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 # Step 2: Set the working directory inside the container
 WORKDIR /app
