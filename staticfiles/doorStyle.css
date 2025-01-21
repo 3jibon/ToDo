@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
 
+
 body {
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
@@ -266,10 +267,4 @@ h6 span {
   text-align: center;
 }
 
-/* Logo styling */
-.logo {
-  position: absolute;
-  top: 10px; /* Adjust as needed */
-  left: 10px; /* Adjust as needed */
-  width: 200px; /* Adjust as needed */
-}
+

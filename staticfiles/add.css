@@ -47,10 +47,10 @@
 }
 
 /* Strike-through effect when task is marked as completed */
-.task-title.line-through {
-    text-decoration: line-through;
-    color: #6c757d;
-}
+ .task-title.completed {
+        text-decoration: line-through;
+        color: #6c757d;
+    }
 
 /* Date and icons styling */
 .due-date, .added-date {

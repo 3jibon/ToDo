@@ -79,7 +79,6 @@ i {
 }
 
 .hori-selector {
-    display: inline-block;
     position: absolute;
     height: 100%;
     top: 0px;
@@ -236,19 +235,18 @@ i {
     }
 
     #navbarSupportedContent ul li a {
-        padding: 12px 20px;z
+        padding: 12px 20px;
         font-size: 16px;
     }
 
-    .hori-selector {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 10; /* Ensure it appears above other elements */
-        background-color: #007bff; /* For visibility */
-        height: 3px;
-        transition: all 0.3s ease-in-out;
-    }
+   .hori-selector {
+  position: absolute;
+  background-color: #007bff; /* Color of the selector */
+  transition: left 0.3s ease, width 0.3s ease, top 0.3s ease; /* Smooth transition */
+  height: 4px; /* Fixed height for the selector */
+  z-index: 10; /* Ensure it's on top of other elements */
+}
+
 
 
     .hori-selector .left,
@@ -288,6 +286,9 @@ i {
     .navbar-expand-custom .navbar-nav {
         -ms-flex-direction: row;
         flex-direction: row;
+    }
+    .navbar-nav{
+        position: relative;
     }
 
     .navbar-expand-custom .navbar-toggler {
