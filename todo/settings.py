@@ -26,7 +26,8 @@ SECRET_KEY = "django-insecure-ov)dxxrnp-f)9%$&5@m2#ng4=&7l99@o)wm6m&j@1zr)!=dywk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['todo-production-42b9.up.railway.app', '127.0.0.1', 'localhost']
+
 
 
 # Application definition
@@ -139,3 +140,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://todo-production-42b9.up.railway.app',
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

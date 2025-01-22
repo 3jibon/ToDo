@@ -1,22 +1,22 @@
-# Base image
-FROM python:3.10-slim
+# Use an official Python image as a parent image
+FROM python:3.11-slim
 
 # Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV PORT=8000  
+ENV PYTHONUNBUFFERED 1
+ENV PORT 8000
 
-# Set work directory
+# Set the working directory
 WORKDIR /app
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Copy the project files
 COPY . .
 
-# Expose port
-EXPOSE $PORT
+# Expose the port (This is the port that will be used by Railway)
+EXPOSE 8000
 
-# Start the Django server
-CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:$PORT"]
+# Set the entrypoint command to run Gunicorn
+CMD ["gunicorn", "todo.wsgi:application", "--bind", "0.0.0.0:$PORT"]
