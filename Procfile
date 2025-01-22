@@ -1,1 +1,1 @@
-web: gunicorn --workers 3 --worker-class gevent todo.wsgi:application
+web: gunicorn todo.wsgi:application --bind 0.0.0.0:$PORT
