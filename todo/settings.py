@@ -105,3 +105,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''  # Your email
 EMAIL_HOST_PASSWORD = ''  # Your Gmail app password
+
+
+CORS_ALLOW_ALL_ORIGINS = True
