@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-ov)dxxrnp-f)9%$&5@m2#ng4=&7l99@o)wm6m&j@1zr)!=dywk"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if os.getenv("DEBUG", "True") == "True" else False
+DEBUG = True
 
-ALLOWED_HOSTS = ['todo-production-42b9.up.railway.app', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -57,7 +57,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
+        "APP_DIRS":True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -131,19 +131,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Additional Settings for Email Backend
+#adiition
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')  # Fetch email from env vars
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  # Fetch password from env vars
-
-# CSRF Trusted Origins
-CSRF_TRUSTED_ORIGINS = [
-    'https://todo-production-42b9.up.railway.app',
-]
-
-# Secure cookies
-SESSION_COOKIE_SECURE = True if not DEBUG else False
-CSRF_COOKIE_SECURE = True if not DEBUG else False
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
