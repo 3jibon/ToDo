@@ -1,19 +1,22 @@
+# Base image
 FROM python:3.10-slim
 
-# Set working directory
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8000  
+
+# Set work directory
 WORKDIR /app
 
-# Copy project files into the container
-COPY . /app
-
 # Install dependencies
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy static files
-COPY ./static /app/static
+# Copy project files
+COPY . .
 
-# Expose the app port
-EXPOSE 8000
+# Expose port
+EXPOSE $PORT
 
-# Run the app
-CMD ["gunicorn", "app:app", "-b", "0.0.0.0:8000"]
+# Start the Django server
+CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:$PORT"]
