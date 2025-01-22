@@ -1,15 +1,14 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-SECRET_KEY = "django-insecure-ov)dxxrnp-f)9%$&5@m2#ng4=&7l99@o)wm6m&j@1zr)!=dywk"
-DEBUG = False
+# Secure settings from environment variables
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-secret-key')  # Replace 'your-secret-key' with a fallback for dev
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-PORT = os.getenv('PORT', '8080')
-ALLOWED_HOSTS = ['todo-production-42b9.up.railway.app', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,todo-production-42b9.up.railway.app').split(',')
 
 INSTALLED_APPS = [
     "app.apps.AppConfig",
@@ -19,92 +18,71 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",  # Add this line
+    "corsheaders",  # Add CORS headers support
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # Add this line
+    "corsheaders.middleware.CorsMiddleware",  # Ensure CORS support
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "todo.urls"
-
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = "todo.wsgi.application"
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",  # Path to SQLite database
     }
 }
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-]
-
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
-USE_I18N = True
-USE_TZ = True
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Add the following lines
-CORS_ALLOWED_ORIGINS = [
-    'https://todo-production-42b9.up.railway.app',
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://todo-production-42b9.up.railway.app',
-]
 
 # Email Configuration (Ensure to fill these fields)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Your email
-EMAIL_HOST_PASSWORD = ''  # Your Gmail app password
+EMAIL_HOST_USER = os.getenv('EMAIL_USER', '')  # Use environment variables for email user
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS', '')  # Use environment variables for email password
 
+# Static files (CSS, JavaScript, images)
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    'https://todo-production-42b9.up.railway.app',  # Allowed domain for CORS
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://todo-production-42b9.up.railway.app',  # Trusted origins for CSRF protection
+]
+
+# Templates Configuration (Ensure the admin works)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],  # Path to your templates directory
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# The time zone and language settings
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+# Default auto field configuration
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
