@@ -1,20 +1,32 @@
-// Attach the event listener only if the element exists
-const regLogElement = document.getElementById('reg-log');
+// Ensure the logic does not interfere with admin pages
+if (!window.location.pathname.startsWith('/admin')) {
+  // Find the element with ID 'reg-log'
+  const regLogElement = document.getElementById('reg-log');
 
-
-if (regLogElement) {
-  regLogElement.addEventListener('change', function () {
-    if (this.checked) {
-      // When checked, change the URL to the signup page
-      window.history.pushState({}, '', '/signup');
+  // Check if the element exists
+  if (regLogElement) {
+    // Ensure the browser supports the history API
+    if (window.history && window.history.pushState) {
+      // Attach the 'change' event listener
+      regLogElement.addEventListener('change', function () {
+        if (this.checked) {
+          // Update the URL to '/signup' when checked
+          window.history.pushState({}, '', '/signup');
+        } else {
+          // Update the URL to '/login' when unchecked
+          window.history.pushState({}, '', '/login');
+        }
+      });
     } else {
-      // When unchecked, revert to the login page
-      window.history.pushState({}, '', '/login');
+      console.error(
+        'The browser does not support the history API. URL change functionality will not work.',
+      );
     }
-  });
-}
-
-// Ensure no interference with /admin paths
-if (window.location.pathname.startsWith('/admin')) {
-  console.log("Admin page detected. Skipping toggle logic.");
+  } else {
+    console.warn(
+      "The element with ID 'reg-log' is not found. No toggle logic applied.",
+    );
+  }
+} else {
+  console.log('Admin page detected. Skipping toggle logic.');
 }
