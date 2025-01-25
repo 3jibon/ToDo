@@ -13,7 +13,7 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "todo.settings")
     
     # Ensure PORT has a default value
-    os.environ.setdefault("PORT", "8000")
+    # os.environ.setdefault("PORT", "8000")
     
     try:
         from django.core.management import execute_from_command_line
