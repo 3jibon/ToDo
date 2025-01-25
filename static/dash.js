@@ -1,7 +1,11 @@
 // Update local time every second
 function updateLocalTime() {
   document.getElementById('local-time').textContent =
-    new Date().toLocaleTimeString();
+    new Date().toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
 }
 setInterval(updateLocalTime, 1000);
 updateLocalTime(); // Initial call to set the time immediately
@@ -29,6 +33,7 @@ function generateCalendar() {
     'Nov',
     'Dec',
   ];
+
   document.getElementById(
     'calendar-header',
   ).textContent = `${monthNames[currentMonth]} ${currentYear}`;
@@ -37,6 +42,7 @@ function generateCalendar() {
     '<table><thead><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead><tbody>';
   let day = 1;
 
+  // Generate days in calendar
   for (let row = 0; row < 6; row++) {
     calendarHTML += '<tr>';
     for (let col = 0; col < 7; col++) {
@@ -61,6 +67,7 @@ function generateCalendar() {
   document.getElementById('calendar').innerHTML = calendarHTML;
 }
 
+// Initial calendar render
 generateCalendar();
 
 // Handle prev and next month buttons
@@ -74,4 +81,13 @@ document.getElementById('next-month').addEventListener('click', () => {
   currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
   if (currentMonth === 0) currentYear++;
   generateCalendar();
+});
+
+// Optional: Add event listeners for day clicks (if required for additional functionality)
+document.getElementById('calendar').addEventListener('click', (e) => {
+  if (e.target.tagName === 'TD' && e.target.textContent) {
+    const selectedDay = e.target.textContent;
+    const selectedDate = new Date(currentYear, currentMonth, selectedDay);
+    alert(`Selected Date: ${selectedDate.toDateString()}`);
+  }
 });
